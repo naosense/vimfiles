@@ -1,40 +1,20 @@
-" ÎÒµÄGVimÅäÖÃÎÄ¼ş
-" ×÷Õß£ºHi¿¨ÎÄµÏÊ²
-" µÚ4ĞĞµ½32ĞĞÎªÔ­Ê¼µÄvimrcÎÄ¼ş
+" æˆ‘çš„GVimé…ç½®æ–‡ä»¶
+" ä½œè€…ï¼šHiå¡æ–‡è¿ªä»€
+" ç¬¬4è¡Œåˆ°32è¡Œä¸ºåŸå§‹çš„vimrcæ–‡ä»¶
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-endfunction
-
+" if has("vms")
+set nobackup		" do not keep a backup file, use versions instead
+" else
+"  set backup		" keep a backup file
+" endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""               ÎÒµÄ¸öĞÔ»¯ÅäÖÃ                    """"""
+"""""               æˆ‘çš„ä¸ªæ€§åŒ–é…ç½®                    """"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ÉèÖÃ±àÂë£¬½â¾öÖĞÎÄÂÒÂëÎÊÌâ
+" è®¾ç½®ç¼–ç ï¼Œè§£å†³ä¸­æ–‡ä¹±ç é—®é¢˜
 set encoding=utf-8
 set fileencodings=utf-8,chinese,latin-1
 if has("win32")
@@ -42,26 +22,26 @@ set fileencoding=chinese
 else
 set fileencoding=utf-8
 endif
-" ½â¾ö²Ëµ¥ÂÒÂë
+" è§£å†³èœå•ä¹±ç 
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
-" ½â¾öÊä³öĞÅÏ¢ÂÒÂë
+" è§£å†³è¾“å‡ºä¿¡æ¯ä¹±ç 
 language messages zh_CN.utf-8 
 
-" ÏÔÊ¾ĞĞºÅ
+" æ˜¾ç¤ºè¡Œå·
 set number
 
-" ÉèÖÃ×ÖÌåºÍÅäÉ«·½°¸
+" è®¾ç½®å­—ä½“å’Œé…è‰²æ–¹æ¡ˆ
 set guifont=Consolas:h12
-colorscheme desert 
+colorscheme darkblue
 
-" Óï·¨¸ßÁÁ
+" è¯­æ³•é«˜äº®
 syntax on
 
-" µ±Ìí¼ÓÀ¨ºÅµÈÊ±£¬×Ô¶¯Ëõ½ø
+" å½“æ·»åŠ æ‹¬å·ç­‰æ—¶ï¼Œè‡ªåŠ¨ç¼©è¿›
 set smartindent
 
-" ½«tab×ª»»Îª4¸ö¿Õ¸ñ
+" å°†tabè½¬æ¢ä¸º4ä¸ªç©ºæ ¼
 set shiftwidth=4
 set tabstop=4
 set expandtab
@@ -69,42 +49,51 @@ set smarttab
 
 set scrolloff=999
 
-" µ±Ä³Ò»ĞĞÊäÈë×¢ÊÍ£¬½ûÖ¹ÏÂÒ»ĞĞ×Ô¶¯ÊäÈë×¢ÊÍ
+" å½“æŸä¸€è¡Œè¾“å…¥æ³¨é‡Šï¼Œç¦æ­¢ä¸‹ä¸€è¡Œè‡ªåŠ¨è¾“å…¥æ³¨é‡Š
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" ÉèÖÃ×´Ì¬À¸
+" è®¾ç½®çŠ¶æ€æ 
 set laststatus=2
 set statusline=
-set statusline+=%-3.3n\                             " »º´æÇøºÅÂë
-set statusline+=%f\                                 " ÎÄ¼şÃû
-set statusline+=%h%m%r%w                            " ×´Ì¬±êÖ¾
-set statusline+=\[%{strlen(&ft)?&ft:'none'}]        " ÎÄ¼şÀàĞÍ
-set statusline+=%=                                  " ÓÒ¶ÔÆëÏÂÃæµÄÈı¸ö×´Ì¬
-set statusline+=0x%-8B                              " ¹â±ê´¦×Ö·ûµÄunicodeÖµ
-set statusline+=%-14(%l,%c%V%)                      " ĞĞºÅ£¬
-set statusline+=%<%P                                " ¹â±ê´¦ÔÚÎÄ¼şµÄÎ»ÖÃ(°Ù·Ö±È)
+set statusline+=%-3.3n\                             " ç¼“å­˜åŒºå·ç 
+set statusline+=%f\                                 " æ–‡ä»¶å
+set statusline+=%h%m%r%w                            " çŠ¶æ€æ ‡å¿—
+set statusline+=\[%{strlen(&ft)?&ft:'none'}]        " æ–‡ä»¶ç±»å‹
+set statusline+=%=                                  " å³å¯¹é½ä¸‹é¢çš„ä¸‰ä¸ªçŠ¶æ€
+set statusline+=0x%-8B                              " å…‰æ ‡å¤„å­—ç¬¦çš„unicodeå€¼
+set statusline+=%-14(%l,%c%V%)                      " è¡Œå·ï¼Œ
+set statusline+=%<%P                                " å…‰æ ‡å¤„åœ¨æ–‡ä»¶çš„ä½ç½®(ç™¾åˆ†æ¯”)
 
-" ĞĞºÅ£¬¹â±êÎ»ÖÃ
+" è¡Œå·ï¼Œå…‰æ ‡ä½ç½®
 set ruler
 
-" ÏÔÊ¾Î´Íê³ÉµÄÃüÁî
+" æ˜¾ç¤ºæœªå®Œæˆçš„å‘½ä»¤
 set showcmd
 
-" Öğ²½ËÑË÷Ä£Ê½£¬¶Ôµ±Ç°¼üÈëµÄ×Ö·û½øĞĞËÑË÷¶ø²»±ØµÈ´ıÊäÈëÍê³É
+" é€æ­¥æœç´¢æ¨¡å¼ï¼Œå¯¹å½“å‰é”®å…¥çš„å­—ç¬¦è¿›è¡Œæœç´¢è€Œä¸å¿…ç­‰å¾…è¾“å…¥å®Œæˆ
 set incsearch
 
-" ËÑË÷Ê±ºöÂÔ´óĞ¡Ğ´
+" æœç´¢æ—¶å¿½ç•¥å¤§å°å†™
 set ignorecase
 
-" ÔÚÃüÁîÄ£Ê½ÏÂÊ¹ÓÃ Tab ×Ô¶¯²¹È«µÄÊ±ºò£¬ ½«²¹È«ÄÚÈİÊ¹ÓÃÒ»¸öÆ¯ÁÁµÄµ¥ĞĞ²Ëµ¥ĞÎÊ½ÏÔÊ¾³öÀ´
+" åœ¨å‘½ä»¤æ¨¡å¼ä¸‹ä½¿ç”¨ Tab è‡ªåŠ¨è¡¥å…¨çš„æ—¶å€™ï¼Œ å°†è¡¥å…¨å†…å®¹ä½¿ç”¨ä¸€ä¸ªæ¼‚äº®çš„å•è¡Œèœå•å½¢å¼æ˜¾ç¤ºå‡ºæ¥
 set wildmenu
 
-" ÏÔÊ¾ÄãËù´¦µÄÄ£Ê½
+" æ˜¾ç¤ºä½ æ‰€å¤„çš„æ¨¡å¼
 set showmode
 
-" ÉèÖÃ´°¿ÚÏÔÊ¾´óĞ¡
+" è®¾ç½®çª—å£æ˜¾ç¤ºå¤§å°
 set lines=35 columns=99
 
-" ½ûÖ¹ÏÔÊ¾²Ëµ¥ºÍ×´Ì¬À¸
+" ç¦æ­¢æ˜¾ç¤ºèœå•å’ŒçŠ¶æ€æ 
 set guioptions-=m
 set guioptions-=T
+
+"æ ¼å¼åŒ–xml
+function Xml()
+    set filetype=xml
+    :%s/>\s*</>\r</g  " æŠŠ>ç©ºæ ¼<æ›¿æ¢æˆ>å›è½¦<
+    :%s/\s*//g        " å»æ‰æ‰€æœ‰çš„ç©ºæ ¼
+    :normal gg=G<cr>
+endfunction
+nmap  ,fx  :call Xml()<CR>
