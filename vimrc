@@ -89,11 +89,26 @@ set lines=35 columns=99
 set guioptions-=m
 set guioptions-=T
 
-"格式化xml
-function Xml()
-    set filetype=xml
-    :%s/>\s*</>\r</g  " 把>空格<替换成>回车<
-    :%s/\s*//g        " 去掉所有的空格
-    :normal gg=G<cr>
+" 设置mapleader
+let mapleader = ";"
+
+" 自定义格式化
+function! MyFormatter()
+    if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm" || &filetype == "")
+        :set filetype=xml
+	:%s/>\s*</>\r</ge  " 把>空格<替换成>回车<
+	:%s/\s*//ge        " 去掉所有的空格
+	:normal gg=G
+    else
+	:normal gg=G
+    endif
 endfunction
-nmap  ,fx  :call Xml()<CR>
+
+" 冒号前面必须要有空格
+nnoremap <F5> :call MyFormatter()<CR>
+
+" 打开vimrc文件
+nnoremap <leader>ev :vsplit $VIM/../DefaultData/settings/vimrc<CR>
+
+" 加载vimrc文件
+nnoremap <leader>sv :source $VIM/../DefaultData/settings/vimrc<CR>
