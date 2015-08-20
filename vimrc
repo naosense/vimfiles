@@ -96,19 +96,54 @@ let mapleader = ";"
 function! MyFormatter()
     if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm" || &filetype == "")
         :set filetype=xml
-	:%s/>\s*</>\r</ge  " 把>空格<替换成>回车<
-	:%s/\s*//ge        " 去掉所有的空格
-	:normal gg=G
+	:%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
+	:%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
+	:normal! gg=G
     else
-	:normal gg=G
+	:normal! gg=G
     endif
 endfunction
 
 " 冒号前面必须要有空格
-nnoremap <F5> :call MyFormatter()<CR>
+nnoremap <F5> :call MyFormatter()<cr>
 
 " 打开vimrc文件
-nnoremap <leader>ev :vsplit $VIM/../DefaultData/settings/vimrc<CR>
+nnoremap <leader>ev :vsplit $VIM/../DefaultData/settings/vimrc<cr>
 
 " 加载vimrc文件
-nnoremap <leader>sv :source $VIM/../DefaultData/settings/vimrc<CR>
+nnoremap <leader>sv :source $VIM/../DefaultData/settings/vimrc<cr>
+
+" 禁用箭头键
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+
+
+" 插入日期署名
+function! Addhead()
+    if (&filetype ==? "sql")
+        call append(0, "-- =========================================================")
+        call append(1, "-- Comment here")
+        call append(2, "-- author\: liupa")
+	call append(3, "-- Created on " . strftime("%Y-%m-%d %X"))
+        call append(4, "-- =========================================================")
+        call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
+	normal! 2ggw
+    elseif (&filetype ==? "py")
+        call append(0, "# -*- coding: utf-8 -*-")
+        call append(1, "\"\"\"Comment here")
+        call append(2, "")
+        call append(3, "@author wocanmei")
+        call append(4, "Created on " . strftime("%Y-%m-%d %X"))
+	normal! 2ggw
+    else
+        echom "Unknow filetype!"
+    endif
+endfunction
+
+nnoremap ## :call Addhead()<cr>
