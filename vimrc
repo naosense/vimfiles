@@ -1,5 +1,3 @@
-" 我的GVim配置文件
-" 作者：Hi卡文迪什
 " 第4行到32行为原始的vimrc文件
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
@@ -55,14 +53,34 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " 设置状态栏
 set laststatus=2
 set statusline=
-set statusline+=%-3.3n\                             " 缓存区号码
-set statusline+=%f\                                 " 文件名
-set statusline+=%h%m%r%w                            " 状态标志
-set statusline+=\[%{strlen(&ft)?&ft:'none'}]        " 文件类型
-set statusline+=%=                                  " 右对齐下面的三个状态
-set statusline+=0x%-8B                              " 光标处字符的unicode值
-set statusline+=%-14(%l,%c%V%)                      " 行号，
-set statusline+=%<%P                                " 光标处在文件的位置(百分比)
+set statusline+=%7*\[%n]                                  "buffernr
+set statusline+=%1*\ %<%F\                                "File+path
+set statusline+=%2*\ %y\                                  "FileType
+set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
+set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
+set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
+set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
+set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
+set statusline+=%9*\ col:%03c\                            "Colnr
+set statusline+=%0*\ \ %m%r%w\ %P\ \                      "Modified? Readonly? Top/bot.
+
+function! HighlightSearch()
+  if &hls
+    return 'H'
+  else
+    return ''
+  endif
+endfunction
+
+hi User1 guifg=#ffdad8  guibg=#880c0e
+hi User2 guifg=#000000  guibg=#F4905C
+hi User3 guifg=#292b00  guibg=#f4f597
+hi User4 guifg=#112605  guibg=#aefe7B
+hi User5 guifg=#051d00  guibg=#7dcc7d
+hi User7 guifg=#ffffff  guibg=#880c0e gui=bold
+hi User8 guifg=#ffffff  guibg=#5b7fbb
+hi User9 guifg=#ffffff  guibg=#810085
+hi User0 guifg=#ffffff  guibg=#094afe
 
 " 行号，光标位置
 set ruler
@@ -127,20 +145,16 @@ nnoremap <right> <nop>
 " 插入日期署名
 function! Addhead()
     if (&filetype ==? "sql")
-        call append(0, "-- =========================================================")
-        call append(1, "-- Comment here")
-        call append(2, "-- author\: liupa")
-	call append(3, "-- Created on " . strftime("%Y-%m-%d %X"))
-        call append(4, "-- =========================================================")
-        call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
-	normal! 2ggw
-    elseif (&filetype ==? "py")
+        call append(0, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
+        normal! 2gg
+    elseif (&filetype ==? "python")
         call append(0, "# -*- coding: utf-8 -*-")
         call append(1, "\"\"\"Comment here")
         call append(2, "")
         call append(3, "@author wocanmei")
-        call append(4, "Created on " . strftime("%Y-%m-%d %X"))
-	normal! 2ggw
+        call append(4, "@date " . strftime("%Y-%m-%d %X"))
+        call append(5, "\"\"\"")
+        normal! 2ggw
     else
         echom "Unknow filetype!"
     endif
