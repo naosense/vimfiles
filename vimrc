@@ -1,4 +1,13 @@
-" 第4行到32行为原始的vimrc文件
+" GVim配置文件
+" 
+" 这是一份Windows下的GVim配置文件，linux下可能略有不同，部分代码来自
+" 互联网，随着时间的推移，一些新的代码和特性将会添加，同时一些代码将
+" 可能会被删除，请结合自己的需求斟酌实用。
+" 
+" 获得最新的代码请到https://github.com/pingao777。
+" @author wocanmei
+" @date 2013-5-21
+
 set nocompatible
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
@@ -161,3 +170,6 @@ function! Addhead()
 endfunction
 
 nnoremap ## :call Addhead()<cr>
+
+" 自动全屏
+autocmd GUIEnter * simalt ~x
