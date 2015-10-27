@@ -121,13 +121,16 @@ let mapleader = ";"
 
 " 自定义格式化
 function! MyFormatter()
-    if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm" || &filetype == "")
+    if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm")
         :set filetype=xml
-	:%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
-	:%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
-	:normal! gg=G
+	    :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
+		:%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
+		:normal! gg=G
+    elseif(&filetype == "" || &filetype == "sql")
+        :set filetype=sql
+		:%SQLUFormatter
     else
-	:normal! gg=G
+		:normal! gg=G
     endif
 endfunction
 
@@ -154,8 +157,13 @@ nnoremap <right> <nop>
 " 插入日期署名
 function! Addhead()
     if (&filetype ==? "sql")
-        call append(0, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
-        normal! 2gg
+        call append(0, "-------------------------------------------------------")
+        call append(1, "-- author: liupa")
+        call append(2, "-- date: " . strftime("%Y-%m-%d %X"))
+        call append(3, "-- CommentHere")
+        call append(4, "-------------------------------------------------------")
+        call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
+        normal! 4ggw
     elseif (&filetype ==? "python")
         call append(0, "# -*- coding: utf-8 -*-")
         call append(1, "\"\"\"Comment here")
