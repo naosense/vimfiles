@@ -123,14 +123,14 @@ let mapleader = ";"
 function! MyFormatter()
     if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm")
         :set filetype=xml
-	    :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
-		:%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
-		:normal! gg=G
+        :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
+        :%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
+        :normal! gg=G
     elseif(&filetype == "" || &filetype == "sql")
         :set filetype=sql
-		:%SQLUFormatter
+        :%SQLUFormatter
     else
-		:normal! gg=G
+        :normal! gg=G
     endif
 endfunction
 
@@ -181,3 +181,6 @@ nnoremap ## :call Addhead()<cr>
 
 " 自动全屏
 autocmd GUIEnter * simalt ~x
+
+" sql关键字大写
+let g:sqlutil_keyword_case = 'U'
