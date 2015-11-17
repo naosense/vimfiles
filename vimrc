@@ -117,17 +117,16 @@ set guioptions-=m
 set guioptions-=T
 
 " 设置mapleader
-let mapleader = ";"
+let mapleader = "\<space>"
 
 " 自定义格式化
 function! MyFormatter()
-    if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm")
+    if (&filetype ==? "xml" || &filetype ==? "html" || &filetype ==? "htm" || &filetype == "")
         :set filetype=xml
         :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
         :%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
         :normal! gg=G
-    elseif(&filetype == "" || &filetype == "sql")
-        :set filetype=sql
+    elseif(&filetype == "sql")
         :%SQLUFormatter
     else
         :normal! gg=G
@@ -138,7 +137,7 @@ endfunction
 nnoremap <F5> :call MyFormatter()<cr>
 
 " 打开vimrc文件
-nnoremap <leader>ev :vsplit $VIM/../DefaultData/settings/vimrc<cr>
+nnoremap <leader>ev :split $VIM/../DefaultData/settings/vimrc<cr>
 
 " 加载vimrc文件
 nnoremap <leader>sv :source $VIM/../DefaultData/settings/vimrc<cr>
@@ -183,4 +182,16 @@ nnoremap ## :call Addhead()<cr>
 autocmd GUIEnter * simalt ~x
 
 " sql关键字大写
-let g:sqlutil_keyword_case = 'U'
+let g:sqlutil_keyword_case = '\U'
+
+" 将替换的/分隔符替换为:
+noremap <leader>rr :%s:\v::g<left><left><left>
+noremap <leader>rg :%s:::g<left><left><left>
+noremap <leader>rc :%s:::cg<left><left><left><left>
+
+" 去除搜索高亮
+noremap <silent><C-l> :<C-u>nohlsearch<cr><C-l>
+
+" 以逗号对齐
+let g:sqlutil_align_comma = 1
+let g:sqlutil_wrap_long_lines = 0
