@@ -9,6 +9,7 @@
 " @date 2013-5-21
 
 set nocompatible
+filetype plugin on
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
@@ -126,7 +127,7 @@ function! MyFormatter()
         :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
         :%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
         :normal! gg=G
-    elseif(&filetype == "sql")
+    elseif(&filetype ==? "sql")
         :%SQLUFormatter
     else
         :normal! gg=G
@@ -137,10 +138,10 @@ endfunction
 nnoremap <F5> :call MyFormatter()<cr>
 
 " 打开vimrc文件
-nnoremap <leader>ev :split $VIM/../DefaultData/settings/vimrc<cr>
+nnoremap <leader>ev :split $VIM/_vimrc<cr>
 
 " 加载vimrc文件
-nnoremap <leader>sv :source $VIM/../DefaultData/settings/vimrc<cr>
+nnoremap <leader>sv :source $VIM/_vimrc<cr>
 
 " 禁用箭头键
 inoremap <up> <nop>
@@ -156,12 +157,19 @@ nnoremap <right> <nop>
 " 插入日期署名
 function! Addhead()
     if (&filetype ==? "sql")
+        :normal! ggdG
         call append(0, "-------------------------------------------------------")
         call append(1, "-- author: liupa")
         call append(2, "-- date: " . strftime("%Y-%m-%d %X"))
         call append(3, "-- CommentHere")
         call append(4, "-------------------------------------------------------")
         call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
+        call append(6, "set feedback off")
+        call append(7, "set define off")
+        call append(8, "")
+        call append(9, "set feedback on")
+        call append(10, "set define on")
+        call append(11, "prompt Done.")
         normal! 4ggw
     elseif (&filetype ==? "python")
         call append(0, "# -*- coding: utf-8 -*-")
@@ -191,6 +199,9 @@ noremap <leader>rc :%s:::cg<left><left><left><left>
 
 " 去除搜索高亮
 noremap <silent><C-l> :<C-u>nohlsearch<cr><C-l>
+
+" 统计当前光标下单词的个数
+nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin<cr>
 
 " 以逗号对齐
 let g:sqlutil_align_comma = 1
