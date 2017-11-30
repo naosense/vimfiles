@@ -25,11 +25,6 @@ set nobackup		" do not keep a backup file, use versions instead
 " 设置编码，解决中文乱码问题
 set encoding=utf-8
 set fileencodings=utf-8,chinese,latin-1
-if has("win32")
-set fileencoding=chinese
-else
-set fileencoding=utf-8
-endif
 " 解决菜单乱码
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
