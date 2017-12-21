@@ -1,9 +1,9 @@
 " GVim配置文件
-" 
+"
 " 这是一份Windows下的GVim配置文件，linux下可能略有不同，部分代码来自
 " 互联网，随着时间的推移，一些新的代码和特性将会添加，同时一些代码将
 " 可能会被删除，请结合自己的需求斟酌实用。
-" 
+"
 " 获得最新的代码请到https://github.com/pingao777。
 " @author wocanmei
 " @date 2013-5-21
@@ -15,28 +15,35 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 
 " if has("vms")
-set nobackup		" do not keep a backup file, use versions instead
+set nobackup        " do not keep a backup file, use versions instead
 " else
-"  set backup		" keep a backup file
+"  set backup       " keep a backup file
 " endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""               我的个性化配置                    """"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 设置编码，解决中文乱码问题
 set encoding=utf-8
-set fileencodings=utf-8,chinese,latin-1
+set fileencodings=utf-8,chinese,latin-1,gbk
 " 解决菜单乱码
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 " 解决输出信息乱码
-language messages zh_CN.utf-8 
+language messages zh_CN.utf-8
 
 " 显示行号
 set number
 
+" 相对行号
+set relativenumber
+
+set linespace=5
+
 " 设置字体和配色方案
-set guifont=Consolas:h12
-colorscheme darkblue
+set guifont=Ubuntu\ Mono:h12
+set gfw=YouYuan:h12
+set background=dark
+colorscheme material-monokai
 
 " 语法高亮
 syntax on
@@ -52,6 +59,9 @@ set smarttab
 
 set scrolloff=999
 
+" 禁用undo文件
+set noundofile
+
 " 当某一行输入注释，禁止下一行自动输入注释
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -63,7 +73,7 @@ set statusline+=%1*\ %<%F\                                "File+path
 set statusline+=%2*\ %y\                                  "FileType
 set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}      "Encoding
 set statusline+=%3*\ %{(&bomb?\",BOM\":\"\")}\            "Encoding2
-set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..) 
+set statusline+=%4*\ %{&ff}\                              "FileFormat (dos/unix..)
 set statusline+=%5*\ %{&spelllang}\%{HighlightSearch()}\  "Spellanguage & Highlight on?
 set statusline+=%8*\ %=\ row:%l/%L\ (%03p%%)\             "Rownumber/total (%)
 set statusline+=%9*\ col:%03c\                            "Colnr
@@ -196,7 +206,7 @@ noremap <leader>rc :%s:::cg<left><left><left><left>
 noremap <silent><C-l> :<C-u>nohlsearch<cr><C-l>
 
 " 统计当前光标下单词的个数
-nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin<cr>
+nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin\|norm!``<cr>
 
 " 以逗号对齐
 let g:sqlutil_align_comma = 1
