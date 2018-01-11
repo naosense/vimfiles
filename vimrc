@@ -40,7 +40,7 @@ set relativenumber
 set linespace=5
 
 " 设置字体和配色方案
-set guifont=Ubuntu\ Mono:h12
+set guifont=Consolas:h12
 set gfw=YouYuan:h12
 set background=dark
 colorscheme material-monokai
@@ -119,7 +119,7 @@ set showmode
 set lines=35 columns=99
 
 " 禁止显示菜单和状态栏
-set guioptions-=m
+" set guioptions-=m
 set guioptions-=T
 
 " 设置mapleader
@@ -164,11 +164,11 @@ function! Addhead()
     if (&filetype ==? "sql")
         :normal! ggdG
         call append(0, "-------------------------------------------------------")
-        call append(1, "-- author: liupa")
+        call append(1, "-- author: name")
         call append(2, "-- date: " . strftime("%Y-%m-%d %X"))
         call append(3, "-- CommentHere")
         call append(4, "-------------------------------------------------------")
-        call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by liupa")
+        call append(5, "prompt Created on " . strftime("%Y-%m-%d %X") . " by name")
         call append(6, "set feedback off")
         call append(7, "set define off")
         call append(8, "")
@@ -211,3 +211,11 @@ nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin\|norm!``<cr>
 " 以逗号对齐
 let g:sqlutil_align_comma = 1
 let g:sqlutil_wrap_long_lines = 0
+
+" 包管理器
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-easy-align'
+call plug#end()
+
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
