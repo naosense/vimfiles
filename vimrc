@@ -219,3 +219,12 @@ call plug#end()
 
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
+
+" 删除重复行
+function! DelDulplicate()
+    :%s:\v^\s*(.+)\s*$:\1:g
+    :sort
+    :g/\v^(.+)$\n\1/d
+endfunction
+
+nnoremap <leader>dp :call DelDulplicate()<cr>
