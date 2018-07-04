@@ -215,16 +215,22 @@ let g:sqlutil_wrap_long_lines = 0
 " 包管理器
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
+Plug 'gabrielelana/vim-markdown'
 call plug#end()
 
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
+let g:markdown_enable_spell_checking = 0
+let g:markdown_enable_input_abbreviations = 0
+let g:markdown_enable_conceal = 1
+
 " 删除重复行
 function! DelDulplicate()
     :%s:\v^\s*(.+)\s*$:\1:g
     :sort
-    :g/\v^(.+)$\n\1/d
+    :g/^\(.\+\)$\n\1/d
 endfunction
 
-nnoremap <leader>dp :call DelDulplicate()<cr>
+nnoremap <leader>dd :call DelDulplicate()<cr>
+nmap <leader>at gaip*<bar>
