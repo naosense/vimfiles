@@ -43,6 +43,7 @@ set linespace=5
 set guifont=Consolas:h12
 set gfw=YouYuan:h12
 set background=dark
+set termguicolors
 colorscheme material-monokai
 
 " 语法高亮
@@ -216,6 +217,7 @@ let g:sqlutil_wrap_long_lines = 0
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-easy-align'
 Plug 'gabrielelana/vim-markdown'
+Plug 'skielbasa/vim-material-monokai'
 call plug#end()
 
 nmap ga <Plug>(EasyAlign)
@@ -223,7 +225,7 @@ xmap ga <Plug>(EasyAlign)
 
 let g:markdown_enable_spell_checking = 0
 let g:markdown_enable_input_abbreviations = 0
-let g:markdown_enable_conceal = 1
+let g:markdown_enable_mappings = 0
 
 " 删除重复行
 function! DelDulplicate()
@@ -233,4 +235,6 @@ function! DelDulplicate()
 endfunction
 
 nnoremap <leader>dd :call DelDulplicate()<cr>
-nmap <leader>at gaip*<bar>
+nmap <leader>ft gaip*<bar>
+
+iab mt <bar> title  <bar> title <bar> title <bar><cr><bar> :---:  <bar> :---  <bar> ---:  <bar><cr><bar> center <bar> left  <bar> right <bar>
