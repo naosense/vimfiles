@@ -40,8 +40,8 @@ set relativenumber
 set linespace=5
 
 " 设置字体和配色方案
-set guifont=Consolas:h12
-set gfw=YouYuan:h12
+set guifont=Consolas:h14
+set gfw=YouYuan:h14
 set background=dark
 set termguicolors
 colorscheme material-monokai
@@ -237,4 +237,10 @@ endfunction
 nnoremap <leader>dd :call DelDulplicate()<cr>
 nmap <leader>ft gaip*<bar>
 
-iab mt <bar> title  <bar> title <bar> title <bar><cr><bar> :---:  <bar> :---  <bar> ---:  <bar><cr><bar> center <bar> left  <bar> right <bar>
+" markdown元素简写
+iab tb <bar> title  <bar> title <bar> title <bar><cr><bar> :---:  <bar> :---  <bar> ---:  <bar><cr><bar> center <bar> left  <bar> right <bar>
+iab cb ```language<cr>```<esc>O
+
+" 行内代码的快捷键
+nnoremap <leader>b ciw``<esc>P
+vnoremap <leader>b c``<esc>P
