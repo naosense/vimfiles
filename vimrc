@@ -213,19 +213,8 @@ nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin\|norm!``<cr>
 let g:sqlutil_align_comma = 1
 let g:sqlutil_wrap_long_lines = 0
 
-" 包管理器
-call plug#begin('~/.vim/plugged')
-Plug 'junegunn/vim-easy-align'
-Plug 'gabrielelana/vim-markdown'
-Plug 'skielbasa/vim-material-monokai'
-call plug#end()
-
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
-
-let g:markdown_enable_spell_checking = 0
-let g:markdown_enable_input_abbreviations = 0
-let g:markdown_enable_mappings = 0
 
 " 删除重复行
 function! DelDulplicate()
@@ -244,3 +233,10 @@ iab cb ```language<cr>```<esc>O
 " 行内代码的快捷键
 nnoremap <leader>b ciw``<esc>P
 vnoremap <leader>b c``<esc>P
+
+" pathogen插件管理
+execute pathogen#infect()
+
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_math = 1
+
