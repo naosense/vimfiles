@@ -227,7 +227,6 @@ nnoremap <leader>dd :call DelDulplicate()<cr>
 nmap <leader>ft gaip*<bar>
 
 " markdown元素简写
-iab tb <bar> title  <bar> title <bar> title <bar><cr><bar> :---:  <bar> :---  <bar> ---:  <bar><cr><bar> center <bar> left  <bar> right <bar>
 iab cb ```language<cr>```<esc>O
 
 " 行内代码的快捷键
@@ -237,6 +236,30 @@ vnoremap <leader>b c``<esc>P
 " pathogen插件管理
 execute pathogen#infect()
 
-let g:vim_markdown_folding_disabled = 1
+" 设置plasticboy/vim-markdown
 let g:vim_markdown_math = 1
+set nofoldenable
 
+" markdown表格插入函数
+function! InsertMKTable()
+    let l:args = split(input("row col?"))
+    let l:row = l:args[0]
+    let l:col = l:args[1]
+    let l:current = line("\.")
+    call append(l:current, RepeatStr(l:col, "| title  ") . "|")
+    call append(l:current + 1, RepeatStr(l:col, "| :---:  ") . "|")
+
+    for i in range(l:row)
+        call append(line("\.") + 2 + i, RepeatStr(l:col, "| center ") . "|")
+    endfor
+endfunction
+
+function! RepeatStr(n, str)
+    let l:s = ""
+    for i in range(a:n)
+        let l:s .= a:str
+    endfor
+    return l:s
+endfunction
+
+nnoremap <leader>mt :call InsertMKTable()<cr>
