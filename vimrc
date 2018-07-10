@@ -259,7 +259,7 @@ endfunction
 
 function! TrailSpace()
     :%s:\v\s+$::ge
-    :normal! G
+    :normal! mqG
     let l:c = line("$")
     let l:trailing_c = 0
     for i in reverse(range(l:c))
@@ -270,6 +270,8 @@ function! TrailSpace()
             break
         endif
     endfor
+    :silent! normal! `q
+    :delmarks q
     echom "delete " . l:trailing_c . " blank lines"
 endfunction
 
@@ -299,4 +301,9 @@ augroup markdown
     au filetype markdown vnoremap <leader>it c**<esc>P
 
     au filetype markdown nnoremap <leader>mt :call InsertMKTable()<cr>
+augroup end
+
+augroup scheme
+    au!
+    au filetype scheme nnoremap <f9> :!start racket -f % -i<cr>
 augroup end
