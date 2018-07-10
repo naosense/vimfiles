@@ -207,14 +207,11 @@ noremap <leader>rc :%s:::cg<left><left><left><left>
 noremap <silent><C-l> :<C-u>nohlsearch<cr><C-l>
 
 " 统计当前光标下单词的个数
-nmap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin\|norm!``<cr>
+nnoremap <leader>cc :%s/\(<c-r>=expand("<cword>")<cr>\)//gin\|norm!``<cr>
 
 " 以逗号对齐
 let g:sqlutil_align_comma = 1
 let g:sqlutil_wrap_long_lines = 0
-
-nmap ga <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
 
 " 删除重复行
 function! DelDulplicate()
@@ -224,14 +221,6 @@ function! DelDulplicate()
 endfunction
 
 nnoremap <leader>dd :call DelDulplicate()<cr>
-nmap <leader>ft gaip*<bar>
-
-" markdown元素简写
-iab cb ```language<cr>```<esc>O
-
-" 行内代码的快捷键
-nnoremap <leader>b ciw``<esc>P
-vnoremap <leader>b c``<esc>P
 
 " pathogen插件管理
 execute pathogen#infect()
@@ -242,7 +231,13 @@ set nofoldenable
 
 " markdown表格插入函数
 function! InsertMKTable()
-    let l:args = split(input("row col?"))
+    echohl Identifier
+    let l:args = split(input("row and col?"))
+    echohl None
+    if (len(l:args) !=? 2)
+        echoerr "input row and col split by space"
+        return
+    endif
     let l:row = l:args[0]
     let l:col = l:args[1]
     let l:current = line("\.")
@@ -262,4 +257,46 @@ function! RepeatStr(n, str)
     return l:s
 endfunction
 
-nnoremap <leader>mt :call InsertMKTable()<cr>
+function! TrailSpace()
+    :%s:\v\s+$::ge
+    :normal! G
+    let l:c = line("$")
+    let l:trailing_c = 0
+    for i in reverse(range(l:c))
+        if (match(getline(i + 1), "^\s*$") > -1)
+            :normal! dd
+            let l:trailing_c += 1
+        else
+            break
+        endif
+    endfor
+    echom "delete " . l:trailing_c . " blank lines"
+endfunction
+
+" 删除空白符的命令
+nnoremap <leader>tr :call TrailSpace()<cr>
+
+" 每次文件保存自动删除空白行
+autocmd BufWrite * :call TrailSpace()
+
+augroup markdown
+    au!
+    au filetype markdown nmap <leader>ft <Plug>(EasyAlign)ip*<bar>
+
+    " markdown元素简写
+    au filetype markdown iab cb ```language<cr>```<esc>O
+    au filetype markdown iab im ![title](url)<esc>3bcw
+    au filetype markdown iab lk [title](url)<esc>3bcw
+
+    " 行内代码的快捷键
+    au filetype markdown nnoremap <leader>bq ciw``<esc>P
+    au filetype markdown vnoremap <leader>bq c``<esc>P
+    " 粗体
+    au filetype markdown nnoremap <leader>bd ciw****<esc>hP
+    au filetype markdown vnoremap <leader>bd c****<esc>hP
+    " 斜体
+    au filetype markdown nnoremap <leader>it ciw**<esc>P
+    au filetype markdown vnoremap <leader>it c**<esc>P
+
+    au filetype markdown nnoremap <leader>mt :call InsertMKTable()<cr>
+augroup end
