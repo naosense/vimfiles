@@ -64,7 +64,7 @@ set scrolloff=999
 set noundofile
 
 " 当某一行输入注释，禁止下一行自动输入注释
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+autocmd filetype * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " 设置状态栏
 set laststatus=2
@@ -133,8 +133,6 @@ function! MyFormatter()
         :%s/>\s*</>\r</ge  " 把>空格<替换成>回车<，不提示错误
         :%s/>\s\+\(\S\+\)\s\+</>\1</ge   " 去掉><之间的空格保留中间的文字，不提示错误（e）
         :normal! gg=G
-    elseif(&filetype ==? "sql")
-        :%SQLUFormatter
     else
         :normal! gg=G
     endif
@@ -193,10 +191,7 @@ endfunction
 nnoremap ## :call Addhead()<cr>
 
 " 自动全屏
-autocmd GUIEnter * simalt ~x
-
-" sql关键字大写
-let g:sqlutil_keyword_case = '\U'
+autocmd guienter * simalt ~x
 
 " 将替换的/分隔符替换为:
 noremap <leader>rr :%s:\v::g<left><left><left>
@@ -224,6 +219,7 @@ nnoremap <leader>dd :call DelDulplicate()<cr>
 
 " pathogen插件管理
 execute pathogen#infect()
+execute pathogen#helptags()
 
 " 设置plasticboy/vim-markdown
 let g:vim_markdown_math = 1
@@ -278,32 +274,37 @@ endfunction
 " 删除空白符的命令
 nnoremap <leader>tr :call TrailSpace()<cr>
 
-" 每次文件保存自动删除空白行
-autocmd BufWrite * :call TrailSpace()
+" 每次文件保存自动删除行
+autocmd bufwrite * :call TrailSpace()
 
 augroup markdown
-    au!
-    au filetype markdown nmap <leader>ft <Plug>(EasyAlign)ip*<bar>
+    autocmd!
+    autocmd filetype markdown nmap <leader>ft <Plug>(EasyAlign)ip*<bar>
 
     " markdown元素简写
-    au filetype markdown iab cb ```language<cr>```<esc>O
-    au filetype markdown iab im ![title](url)<esc>3bcw
-    au filetype markdown iab lk [title](url)<esc>3bcw
+    autocmd filetype markdown iab cb ```language<cr>```<esc>2b
+    autocmd filetype markdown iab im ![title](url)<esc>3bcw
+    autocmd filetype markdown iab lk [title](url)<esc>3bcw
 
     " 行内代码的快捷键
-    au filetype markdown nnoremap <leader>bq ciw``<esc>P
-    au filetype markdown vnoremap <leader>bq c``<esc>P
+    autocmd filetype markdown nnoremap <leader>q ciw``<esc>P
+    autocmd filetype markdown vnoremap <leader>q c``<esc>P
     " 粗体
-    au filetype markdown nnoremap <leader>bd ciw****<esc>hP
-    au filetype markdown vnoremap <leader>bd c****<esc>hP
+    autocmd filetype markdown nnoremap <leader>b ciw****<esc>hP
+    autocmd filetype markdown vnoremap <leader>b c****<esc>hP
     " 斜体
-    au filetype markdown nnoremap <leader>it ciw**<esc>P
-    au filetype markdown vnoremap <leader>it c**<esc>P
+    autocmd filetype markdown nnoremap <leader>i ciw**<esc>P
+    autocmd filetype markdown vnoremap <leader>i c**<esc>P
 
-    au filetype markdown nnoremap <leader>mt :call InsertMKTable()<cr>
+    autocmd filetype markdown nnoremap <leader>mt :call InsertMKTable()<cr>
+    autocmd filetype markdown nnoremap <F9> :MarkSyncPreview<cr>
+    autocmd filetype markdown nnoremap <S-F9> :MarkSyncClose<cr>
 augroup end
 
 augroup scheme
-    au!
-    au filetype scheme nnoremap <f9> :!start racket -f % -i<cr>
+    autocmd!
+    autocmd filetype scheme nnoremap <F9> :silent !start cmd /c racket -f % -i<cr>
 augroup end
+
+" 配置vim-flake8快捷键
+autocmd filetype python nnoremap <buffer> <F6> :call Flake8()<cr>
