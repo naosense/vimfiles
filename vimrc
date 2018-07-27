@@ -222,7 +222,9 @@ execute pathogen#infect()
 execute pathogen#helptags()
 
 " 设置plasticboy/vim-markdown
+let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_math = 1
+let g:vim_markdown_conceal = 0
 set nofoldenable
 
 " markdown表格插入函数
@@ -268,7 +270,7 @@ function! TrailSpace()
     endfor
     :silent! normal! `q
     :delmarks q
-    echom "delete " . l:trailing_c . " blank lines"
+    echo "delete " . l:trailing_c . " blank lines"
 endfunction
 
 " 删除空白符的命令
@@ -308,3 +310,5 @@ augroup end
 
 " 配置vim-flake8快捷键
 autocmd filetype python nnoremap <buffer> <F6> :call Flake8()<cr>
+
+let g:markdown_preview_sync_chrome_path = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
