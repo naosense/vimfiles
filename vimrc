@@ -270,7 +270,6 @@ function! TrailSpace()
     endfor
     :silent! normal! `q
     :delmarks q
-    echo "delete " . l:trailing_c . " blank lines"
 endfunction
 
 " 删除空白符的命令
@@ -284,9 +283,9 @@ augroup markdown
     autocmd filetype markdown nmap <leader>ft <Plug>(EasyAlign)ip*<bar>
 
     " markdown元素简写
-    autocmd filetype markdown iab cb ```language<cr>```<esc>2b
-    autocmd filetype markdown iab im ![title](url)<esc>3bcw
-    autocmd filetype markdown iab lk [title](url)<esc>3bcw
+    autocmd filetype markdown iab cb ```language<cr>```<esc>2bh
+    autocmd filetype markdown iab im ![title](url)<esc>3bh
+    autocmd filetype markdown iab lk [title](url)<esc>4b
 
     " 行内代码的快捷键
     autocmd filetype markdown nnoremap <leader>q ciw``<esc>P
