@@ -22,6 +22,7 @@ set nobackup        " do not keep a backup file, use versions instead
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""               我的个性化配置                    """"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set noimdisable
 " 设置编码，解决中文乱码问题
 set encoding=utf-8
 set fileencodings=utf-8,chinese,latin-1,gbk
@@ -304,7 +305,8 @@ augroup end
 
 augroup scheme
     autocmd!
-    autocmd filetype scheme nnoremap <F9> :silent !start cmd /c racket -f % -i<cr>
+    " 加上<esc>可以避免弹出命令行必须按两次enter才能回到代码
+    autocmd filetype scheme nnoremap <F9> :w<cr>:! racket %<cr><esc>
 augroup end
 
 " 配置vim-flake8快捷键
